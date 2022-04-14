@@ -1,0 +1,97 @@
+From c9f6c97d63ca4abf3e82425dd44d57d30d800454 Mon Sep 17 00:00:00 2001
+From: Melissa Aguiar <melissa.aguiar@engenharia.ufjf.br>
+Date: Fri, 1 Apr 2022 11:54:41 -0300
+Subject: [PATCH] No installation halcs
+
+---
+ build_cmake.sh | 72 +++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 36 insertions(+), 36 deletions(-)
+
+diff --git a/build_cmake.sh b/build_cmake.sh
+index 60d5a91..ed6b824 100755
+--- a/build_cmake.sh
++++ b/build_cmake.sh
+@@ -2,44 +2,44 @@
+ 
+ set -euo pipefail
+ 
+-SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
++#SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+ 
+-GENERATOR="${1:-RPM}"
++#GENERATOR="${1:-RPM}"
+ 
+ mkdir -p build
+ cd build
+-cmake3 \
+-    -Dcpack_generator_OPT=${GENERATOR} \
+-    -Dcpack_components_grouping_OPT=ONE_PER_GROUP \
+-    -Dcpack_components_all_OPT="Pciedriver" \
+-    ../
+-make package
+-cmake3 \
+-    -Dcpack_generator_OPT=${GENERATOR} \
+-    -Dcpack_components_grouping_OPT=ALL_COMPONENTS_IN_ONE \
+-    -Dcpack_components_all_OPT="Binaries;Libs;Scripts;Tools" \
+-    ../
+-make package
++#cmake3 \
++#    -Dcpack_generator_OPT=${GENERATOR} \
++#    -Dcpack_components_grouping_OPT=ONE_PER_GROUP \
++#    -Dcpack_components_all_OPT="Pciedriver" \
++#    ../
++#make -j package
++cmake3 ..
++#    -Dcpack_generator_OPT=${GENERATOR} \
++#    -Dcpack_components_grouping_OPT=ALL_COMPONENTS_IN_ONE \
++#    -Dcpack_components_all_OPT="Binaries;Libs;Scripts;Tools" \
++#    ../
++make -j #package
+ 
+-case "${GENERATOR}" in
+-    RPM)
+-        rpm -e halcsd || :
+-        rpm -e halcsd-debuginfo || :
+-        rpm -i halcsd-debuginfo*
+-        rpm -i halcsd*_x86_64.rpm 
+-    ;;
+-    DEB)
+-        dpkg -r halcsd || :
+-        dpkg -r halcsd-debuginfo || :
+-        dpkg -i halcsd-debuginfo*
+-        dpkg -i halcsd-debuginfo*
+-    ;;
+-    *)
+-        echo "Invalid Gateware: "${FPGA_SYNTHESIS_NAME} >&2
+-        exit 1
+-        ;;
+-esac
+-
+-chmod 777 /tmp/malamute || :
+-ldconfig
+-systemctl daemon-reload
++#case "${GENERATOR}" in
++#    RPM)
++#        rpm -e halcsd || :
++#        rpm -e halcsd-debuginfo || :
++#        rpm -i halcsd-debuginfo*
++#        rpm -i halcsd*_x86_64.rpm 
++#    ;;
++#    DEB)
++#        dpkg -r halcsd || :
++#        dpkg -r halcsd-debuginfo || :
++#        dpkg -i halcsd-debuginfo*
++#        dpkg -i halcsd-debuginfo*
++#    ;;
++#    *)
++#        echo "Invalid Gateware: "${FPGA_SYNTHESIS_NAME} >&2
++#        exit 1
++#        ;;
++#esac
++#
++#chmod 777 /tmp/malamute || :
++#ldconfig
++#systemctl daemon-reload
+-- 
+1.8.3.1
+

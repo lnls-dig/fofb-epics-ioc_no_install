@@ -1,0 +1,73 @@
+From 91015a17c5714ffb4d19bd67bd0f1d2cd5bb0dab Mon Sep 17 00:00:00 2001
+From: Guilherme Ricioli <guilherme.riciolic@gmail.com>
+Date: Thu, 14 Apr 2022 18:52:08 -0300
+Subject: [PATCH] No installation fofb-epics-ioc
+
+---
+ FOFBApp/src/Makefile | 19 ++++++++++++++++++-
+ Makefile             | 22 +++++++++++-----------
+ 2 files changed, 29 insertions(+), 12 deletions(-)
+
+diff --git a/FOFBApp/src/Makefile b/FOFBApp/src/Makefile
+index ac90ec2..10748c8 100644
+--- a/FOFBApp/src/Makefile
++++ b/FOFBApp/src/Makefile
+@@ -60,7 +60,24 @@ FOFB_SYS_LIBS += dl
+ FOFB_SYS_LIBS += gcc
+
+ # System header files and "any" implementation.
+-USR_CXXFLAGS += -I/usr/include -I$(TOP)/foreign/any
++USR_CXXFLAGS += -I$(TOP)/foreign/any
++
++HALCS_REPOS = /tmp/repos/test/halcs
++
++USR_CXXFLAGS += -I$(HALCS_REPOS)/src/client/include
++USR_CXXFLAGS += -I$(HALCS_REPOS)/libs/acqclient/include
++USR_CXXFLAGS += -I$(HALCS_REPOS)/libs/errhand/include
++USR_CXXFLAGS += -I$(HALCS_REPOS)/libs/hutils/include
++
++USR_LDFLAGS += -Wl,-rpath=$(HALCS_REPOS)/build/src/client
++USR_LDFLAGS += -Wl,-rpath=$(HALCS_REPOS)/build/libs/acqclient
++USR_LDFLAGS += -Wl,-rpath=$(HALCS_REPOS)/build/libs/errhand
++USR_LDFLAGS += -Wl,-rpath=$(HALCS_REPOS)/build/libs/hutils
++
++USR_LDFLAGS += -L$(HALCS_REPOS)/build/src/client
++USR_LDFLAGS += -L$(HALCS_REPOS)/build/libs/acqclient
++USR_LDFLAGS += -L$(HALCS_REPOS)/build/libs/errhand
++USR_LDFLAGS += -L$(HALCS_REPOS)/build/libs/hutils
+
+ # Compile test program
+ PROD += FOFBCheckInit
+diff --git a/Makefile b/Makefile
+index b8a4c1b..08dc482 100644
+--- a/Makefile
++++ b/Makefile
+@@ -14,14 +14,14 @@ iocBoot_DEPEND_DIRS += $(filter %App,$(DIRS))
+
+ include $(TOP)/configure/RULES_TOP
+
+-install:
+-	$(MAKE) -C install install
+-.PHONY: install
+-
+-uninstall:
+-	$(MAKE) -C install uninstall
+-.PHONY: uninstall
+-
+-realuninstall:
+-	$(MAKE) -C install realuninstall
+-.PHONY: realuninstall
++#install:
++#	#$(MAKE) -C install install
++#.PHONY: install
++#
++#uninstall:
++#	$(MAKE) -C install uninstall
++#.PHONY: uninstall
++#
++#realuninstall:
++#	$(MAKE) -C install realuninstall
++#.PHONY: realuninstall
+--
+1.8.3.1
+
